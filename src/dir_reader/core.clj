@@ -1,11 +1,11 @@
 (ns dir-reader.core
-   (:require
-     [net.cgrand.enlive-html :as html]
-     [clj-http.client :as client]
-     )
+  (:require
+    [net.cgrand.enlive-html :as html]
+    [clj-http.client :as client]
+    )
   )
 
-;; define root url (make sure it contains trailing slash)
+;; default root url (make sure it contains trailing slash)
 (def base-url "http://localhost:8000/")
 
 (defn fetch-url
@@ -22,12 +22,18 @@
 (defn traverse-dir
   "Recursively traverses directory"
   [root]
-   (reduce (fn [files name]
-            (concat files (if (.endsWith name "/")
-              (traverse-dir (str root name))
-              [(str root name)])))
-           []
-           (extract-names (fetch-url root))))
+
+  ;; reduce takes a function named reducer tha accepts
+  ;; two arguments: 
+  ;; - accumulator (files in this case)
+  ;; - current element from sequence
+  (reduce (fn [files name]
+            (concat files 
+                    (if (.endsWith name "/")
+                      (traverse-dir (str root name))
+                      [(str root name)])))
+          []
+          (extract-names (fetch-url root))))
 
 (defn -main [root]
   (println "Fetching data from: " root)
