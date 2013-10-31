@@ -12,6 +12,9 @@ Then issue `lein run` with url:
 
     lein run http://localhost:8000/
 
+!NOTE: Make sure url ends wiht "/".
+
+
 ## ToDo
 
 Use core.async to fetch dirs in parallel.
